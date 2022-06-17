@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
 import { filterImageFromURL, deleteLocalFiles } from "./util/util";
 
@@ -12,15 +12,15 @@ import { filterImageFromURL, deleteLocalFiles } from "./util/util";
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
 
-  app.get("/filteredimage", async (req, res) => {
-    const { image_url } = req.query;
+  app.get("/filteredimage", async (req: Request, res: Response) => {
+    const { image_url }: { image_url: string } = req.query;
 
     if (!image_url) {
       return res
         .status(400)
         .send("Invalid parameter. Please supply a valid URL to {image_url}");
     }
-    const filteredpath = await filterImageFromURL(image_url);
+    const filteredpath: string = await filterImageFromURL(image_url);
     res.status(200).sendFile(filteredpath, () => {
       deleteLocalFiles([filteredpath]);
     });
