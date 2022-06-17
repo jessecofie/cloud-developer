@@ -20,7 +20,6 @@ import { filterImageFromURL, deleteLocalFiles } from "./util/util";
         .status(400)
         .send("Invalid parameter. Please supply a valid URL to {image_url}");
     }
-
     const filteredpath = await filterImageFromURL(image_url);
     res.status(200).sendFile(filteredpath, () => {
       deleteLocalFiles([filteredpath]);
